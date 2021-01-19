@@ -60,5 +60,15 @@
             "emoji": "🇧",
             "option": "Sunday"
         }
+    ],
+    "confirm": [
+        {
+            "emoji": "✅",
+            "option": "Yes"
+        },
+        {
+            "emoji": "❌",
+            "option": "No"
+        }
     ]
 }
