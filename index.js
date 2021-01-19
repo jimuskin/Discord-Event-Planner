@@ -1,7 +1,12 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
+const {
+	Client,
+	MessageEmbed,
+	Message,
+} = require("discord.js");
+const client = new Client();
 require("dotenv").config();
-require("./expressWeb");
+
+const emojis = require("./emoji.json");
 
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}`);
