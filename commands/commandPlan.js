@@ -1,7 +1,5 @@
 const argsHelp = require("./commandPlan/argsHelp");
-
-const planOptions = require("../planOptions.json");
-const sendPlanMessage = require("../sendPlanMessage");
+const argsOptions = require("./commandPlan/argsOptions");
 
 const commandPlan = (message, args) => {
 	const { author, channel } = message;
@@ -19,32 +17,7 @@ const commandPlan = (message, args) => {
 		return;
 	}
 
-	try {
-		const options = planOptions[keyArg];
-
-		if (!options) {
-			channel.send(
-				`Unknown/invalid options. Type ${process.env.COMMAND_PREFIX}plan help for more details.`
-			);
-			return;
-		}
-
-		const messageDetails = args.join(" ");
-
-		const planDetails = {
-			author: author,
-			channel: channel,
-			message: messageDetails,
-		};
-
-		sendPlanMessage(planDetails, options);
-
-		try {
-			message.delete();
-		} catch (error) {
-			console.log(`${error}`);
-		}
-	} catch (error) {
+	if (!argsOptions(message, keyArg, args)) {
 		channel.send(
 			`Unknown/invalid options. Type ${process.env.COMMAND_PREFIX}plan help for more details.`
 		);
