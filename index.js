@@ -1,25 +1,33 @@
-const { Client } = require("discord.js");
-const client = new Client();
 require("dotenv").config();
-const sendPlanMessage = require("./sendPlanMessage");
 
-const emojis = require("./emoji.json");
+const { Client, Collection } = require("discord.js");
+const client = new Client();
+
+const commandPlan = require("./commands/commandPlan");
 
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on("message", (msg) => {
-	if (msg.content === "testplan") {
-		constructTestPlan(msg);
+client.on("message", (message) => {
+	const prefix = process.env.COMMAND_PREFIX || "!";
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).trim().split(` `);
+	const commandName = args.shift().toLowerCase();
+
+	if (commandName === "testplan") {
+		constructTestPlan(message);
+	} else if (commandName === "plan") {
+		commandPlan(message, args);
 	}
 });
 
-const constructTestPlan = (msg) => {
+const constructTestPlan = ({ author, channel }) => {
 	const planDetails = {
 		message: "Chill with the boys",
-		author: msg.author,
-		channel: msg.channel,
+		author: author,
+		channel: channel,
 	};
 
 	const options = [
@@ -33,7 +41,7 @@ const constructTestPlan = (msg) => {
 		},
 	];
 
-	sendPlanMessage(planDetails, options);
+	require("./sendPlanMessage")(planDetails, options);
 };
 
 client.login(process.env.DISCORD_TOKEN);

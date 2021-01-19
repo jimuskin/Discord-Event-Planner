@@ -1,0 +1,64 @@
+{
+    "week": [
+        {
+            "emoji": "🇦",
+            "option": "Monday"
+        },
+        {
+            "emoji": "🇧",
+            "option": "Tuesday"
+        },
+        {
+            "emoji": "🇨",
+            "option": "Wednesday"
+        },
+        {
+            "emoji": "🇩",
+            "option": "Thursday"
+        },
+        {
+            "emoji": "🇪",
+            "option": "Friday"
+        },
+        {
+            "emoji": "🇫",
+            "option": "Saturday"
+        },
+        {
+            "emoji": "🇬",
+            "option": "Sunday"
+        }
+    ],
+    "weekday": [
+        {
+            "emoji": "🇦",
+            "option": "Monday"
+        },
+        {
+            "emoji": "🇧",
+            "option": "Tuesday"
+        },
+        {
+            "emoji": "🇨",
+            "option": "Wednesday"
+        },
+        {
+            "emoji": "🇩",
+            "option": "Thursday"
+        },
+        {
+            "emoji": "🇪",
+            "option": "Friday"
+        }
+    ],
+    "weekend": [
+        {
+            "emoji": "🇦",
+            "option": "Saturday"
+        },
+        {
+            "emoji": "🇧",
+            "option": "Sunday"
+        }
+    ]
+}

@@ -12,10 +12,7 @@ const sendPlanMessage = async (planDetails, options) => {
 
 	messageEmbed.addField("Details", message);
 
-	messageEmbed.addField(
-		"Options",
-		constructOptionsMessage(options)
-	);
+	messageEmbed.addField("Options", constructOptionsMessage(options));
 
 	channel.send(PLAN_ANNOUNCEMENT_MESSAGE);
 
