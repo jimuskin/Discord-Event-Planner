@@ -38,6 +38,12 @@ const commandPlan = (message, args) => {
 		};
 
 		sendPlanMessage(planDetails, options);
+
+		try {
+			message.delete();
+		} catch (error) {
+			console.log(`${error}`);
+		}
 	} catch (error) {
 		channel.send(
 			`Unknown/invalid options. Type ${process.env.COMMAND_PREFIX}plan help for more details.`
