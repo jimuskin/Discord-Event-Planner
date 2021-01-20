@@ -41,7 +41,7 @@ const constructTestPlan = ({ author, channel }) => {
 		},
 	];
 
-	require("./sendPlanMessage")(planDetails, options);
+	require("./setupPlan")(planDetails, options);
 };
 
 client.login(process.env.DISCORD_TOKEN);
