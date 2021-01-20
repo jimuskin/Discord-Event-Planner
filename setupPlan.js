@@ -12,7 +12,7 @@ const setupPlan = async (planDetails, options) => {
 		emojiList.push(emoji);
 	}
 
-	const responses = generateResponses(null, channel, options);
+	const responses = await generateResponses(null, channel, options);
 
 	const messageEmbed = constructEmbedMessasge(message, options, responses);
 
@@ -24,46 +24,50 @@ const setupPlan = async (planDetails, options) => {
 	handleUserReactions(planMessage, message, emojiList, options);
 };
 
-const generateResponses = (message, channel, options) => {
-	const reactedUsers = [];
-	const responses = [];
+const generateResponses = async (message, channel, options) => {
+	return new Promise((resolve, reject) => {
+		const reactedUsers = [];
+		const responses = [];
 
-	if (message) {
-		//Get all reactions of available users.
-		for (let key in options) {
-			responses[options[key].option] = [];
+		if (message) {
+			//Get all reactions of available users.
+			for (let key in options) {
+				responses[options[key].option] = [];
 
-			const reactions = message.reactions.cache.get(options[key].emoji);
+				const reactions = message.reactions.cache.get(
+					options[key].emoji
+				);
 
-			if (reactions) {
-				reactions.users.cache.map((user) => {
-					if (user.bot) return;
+				if (reactions) {
+					reactions.users.cache.map((user) => {
+						if (user.bot) return;
 
-					if (!reactedUsers.includes(user.id)) {
-						reactedUsers.push(user.id);
-					}
+						if (!reactedUsers.includes(user.id)) {
+							reactedUsers.push(user.id);
+						}
 
-					responses[options[key].option].push(user.username);
-				});
+						responses[options[key].option].push(user.username);
+					});
+				}
+			}
+		} else {
+			for (let key in options) {
+				responses[options[key].option] = [];
 			}
 		}
-	} else {
-		for (let key in options) {
-			responses[options[key].option] = [];
-		}
-	}
 
-	responses["Unavailable"] = [];
+		responses["Unavailable"] = [];
 
-	channel.guild.members.cache.map((member) => {
-		if (member.user.bot) return;
-
-		if (!reactedUsers.includes(member.user.id)) {
-			responses["Unavailable"].push(member.user.username);
-		}
+		channel.guild.members.fetch().then((members) => {
+			members.map((member) => {
+				if (member.user.bot) return;
+				if (!reactedUsers.includes(member.user.id)) {
+					responses["Unavailable"].push(member.user.username);
+				}
+			});
+			resolve(responses);
+		});
 	});
-
-	return responses;
 };
 
 const handleUserReactions = (message, messageDetails, emojiList, options) => {
@@ -76,8 +80,12 @@ const handleUserReactions = (message, messageDetails, emojiList, options) => {
 		dispose: true,
 	});
 
-	const onCollectorUpdate = (reaction, user) => {
-		const responses = generateResponses(message, message.channel, options);
+	const onCollectorUpdate = async (reaction, user) => {
+		const responses = await generateResponses(
+			message,
+			message.channel,
+			options
+		);
 
 		const messageEmbed = constructEmbedMessasge(
 			messageDetails,
