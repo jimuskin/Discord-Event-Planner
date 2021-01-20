@@ -55,8 +55,9 @@ const generateResponses = (message, channel, options) => {
 
 	responses["Unavailable"] = [];
 
+	console.log(channel.guild.cache);
 	channel.guild.members.cache.map((member) => {
-		if (member.user.bot) return;
+		//if (member.user.bot) return;
 
 		if (!reactedUsers.includes(member.user.id)) {
 			responses["Unavailable"].push(member.user.username);
