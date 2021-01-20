@@ -1,5 +1,5 @@
 const planOptions = require("../../planOptions.json");
-const sendPlanMessage = require("../../sendPlanMessage");
+const setupPlan = require("../../setupPlan");
 
 const argsOptions = (message, optionName, args) => {
 	const { author, channel } = message;
@@ -19,7 +19,7 @@ const argsOptions = (message, optionName, args) => {
 			message: messageDetails,
 		};
 
-		sendPlanMessage(planDetails, options);
+		setupPlan(planDetails, options);
 
 		message.delete().catch((error) => console.log(`${error}`));
 

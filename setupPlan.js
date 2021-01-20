@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-const sendPlanMessage = async (planDetails, options) => {
+const setupPlan = async (planDetails, options) => {
 	const { author, channel, message } = planDetails;
 
 	const PLAN_ANNOUNCEMENT_MESSAGE = `@everyone - Plan started by ${author}. Make sure to react.`;
@@ -13,6 +13,9 @@ const sendPlanMessage = async (planDetails, options) => {
 	messageEmbed.addField("Details", message);
 
 	messageEmbed.addField("Options", constructOptionsMessage(options));
+
+	//console.log(channel.guild.members);
+	//.members.cache.map((m) => console.log(m.user.tag));
 
 	channel.send(PLAN_ANNOUNCEMENT_MESSAGE);
 
@@ -34,4 +37,4 @@ const constructOptionsMessage = (options) => {
 	return optionsMessage;
 };
 
-module.exports = sendPlanMessage;
+module.exports = setupPlan;
