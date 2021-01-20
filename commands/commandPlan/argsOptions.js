@@ -13,6 +13,10 @@ const argsOptions = (message, optionName, args) => {
 
 		const messageDetails = args.join(" ");
 
+		if (messageDetails === "") {
+			return false;
+		}
+
 		const planDetails = {
 			author: author,
 			channel: channel,
