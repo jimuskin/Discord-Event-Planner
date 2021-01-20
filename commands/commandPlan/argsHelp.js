@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const planOptions = require("../../planOptions.json");
+const globals = require("../../globals");
 
 const argsHelp = (message, args) => {
 	const messageEmbed = new MessageEmbed()
@@ -34,10 +35,9 @@ const getPlanOptions = () => {
 };
 
 const getCommandsMessage = (commands) => {
-	const prefix = process.env.COMMAND_PREFIX || "!";
 	let commandsMessage = "";
 	commands.map(({ command, description }) => {
-		commandsMessage += `\`${prefix}${command}\`: ${description}\n`;
+		commandsMessage += `\`${globals.commandPrefix}${command}\`: ${description}\n`;
 	});
 
 	return commandsMessage;
