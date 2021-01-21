@@ -8,9 +8,16 @@ const setupPlan = async (planDetails, options) => {
 		(role) => role.name === globals.planRole
 	);
 
-	const PLAN_ANNOUNCEMENT_MESSAGE = `${
-		planRole || ""
-	} Plan started by ${author}. Make sure to react.`;
+	let planPing = planRole;
+
+	if (!planRole) {
+		planPing = "";
+		console.log(
+			`Unable to find a role with the name ${globals.planRole}. Make sure you defined it in the ENV or made a role for it.`
+		);
+	}
+
+	const PLAN_ANNOUNCEMENT_MESSAGE = `${planPing} Plan started by ${author}. Make sure to react.`;
 
 	const emojiList = [];
 
