@@ -8,7 +8,9 @@ const setupPlan = async (planDetails, options) => {
 		(role) => role.name === globals.planRole
 	);
 
-	const PLAN_ANNOUNCEMENT_MESSAGE = `${planRole} Plan started by ${author}. Make sure to react.`;
+	const PLAN_ANNOUNCEMENT_MESSAGE = `${
+		planRole || ""
+	} Plan started by ${author}. Make sure to react.`;
 
 	const emojiList = [];
 
