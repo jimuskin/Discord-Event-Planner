@@ -1,9 +1,14 @@
 const { MessageEmbed } = require("discord.js");
+const globals = require("./globals");
 
 const setupPlan = async (planDetails, options) => {
 	const { author, channel, message } = planDetails;
 
-	const PLAN_ANNOUNCEMENT_MESSAGE = `Plan started by ${author}. Make sure to react.`;
+	const planRole = channel.guild.roles.cache.find(
+		(role) => role.name === globals.planRole
+	);
+
+	const PLAN_ANNOUNCEMENT_MESSAGE = `${planRole} Plan started by ${author}. Make sure to react.`;
 
 	const emojiList = [];
 
@@ -41,6 +46,15 @@ const generateResponses = async (message, channel, options) => {
 				if (reactions) {
 					reactions.users.cache.map((user) => {
 						if (user.bot) return;
+						if (!channel.guild.members.cache.has(user.id)) return;
+
+						let member = channel.guild.members.cache.get(user.id);
+						if (
+							!member.roles.cache.find(
+								(role) => role.name === globals.planRole
+							)
+						)
+							return;
 
 						if (!reactedUsers.includes(user.id)) {
 							reactedUsers.push(user.id);
@@ -61,6 +75,13 @@ const generateResponses = async (message, channel, options) => {
 		channel.guild.members.fetch().then((members) => {
 			members.map((member) => {
 				if (member.user.bot) return;
+				if (
+					!member.roles.cache.find(
+						(role) => role.name === globals.planRole
+					)
+				)
+					return;
+
 				if (!reactedUsers.includes(member.user.id)) {
 					responses["Unavailable"].push(member.user.username);
 				}
