@@ -4,18 +4,10 @@ const globals = require("./globals");
 const setupPlan = async (planDetails, options) => {
 	const { author, channel, message } = planDetails;
 
-	const planRole = channel.guild.roles.cache.find(
-		(role) => role.name === globals.planRole
-	);
-
-	let planPing = planRole;
-
-	if (!planRole) {
-		planPing = "";
-		console.log(
-			`Unable to find a role with the name ${globals.planRole}. Make sure you defined it in the ENV or made a role for it.`
-		);
-	}
+	const planRole =
+		channel.guild.roles.cache.find(
+			(role) => role.name === globals.planRole
+		) || "";
 
 	const PLAN_ANNOUNCEMENT_MESSAGE = `${planPing} Plan started by ${author}. Make sure to react.`;
 
