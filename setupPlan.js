@@ -24,7 +24,7 @@ const setupPlan = async (planDetails, options) => {
 	const planMessage = await channel.send(messageEmbed);
 
 	reactOptions(planMessage, emojiList);
-	handleUserReactions(planMessage, message, emojiList, options);
+	handleUserReactions(planMessage, message, emojiList, options, role);
 };
 
 const generateResponses = async (message, channel, options, role) => {
@@ -48,9 +48,8 @@ const generateResponses = async (message, channel, options, role) => {
 
 						let member = channel.guild.members.cache.get(user.id);
 						if (
-							!member.roles.cache.find(
-								(role) => role.id === role.id
-							)
+							role &&
+							!member.roles.cache.find((r) => r.id === role.id)
 						)
 							return;
 
@@ -73,7 +72,8 @@ const generateResponses = async (message, channel, options, role) => {
 		channel.guild.members.fetch().then((members) => {
 			members.map((member) => {
 				if (member.user.bot) return;
-				if (!member.roles.cache.find((role) => role.id === role.id))
+				if (!role) return;
+				if (!member.roles.cache.find((r) => role && r.id === role.id))
 					return;
 
 				if (!reactedUsers.includes(member.user.id)) {
