@@ -2,14 +2,11 @@ const { MessageEmbed } = require("discord.js");
 const globals = require("./globals");
 
 const setupPlan = async (planDetails, options) => {
-	const { author, channel, message } = planDetails;
+	const { author, channel, message, role } = planDetails;
 
-	const planRole =
-		channel.guild.roles.cache.find(
-			(role) => role.name === globals.planRole
-		) || "";
-
-	const PLAN_ANNOUNCEMENT_MESSAGE = `${planPing} Plan started by ${author}. Make sure to react.`;
+	const PLAN_ANNOUNCEMENT_MESSAGE = `${
+		role ? role : ""
+	} Plan started by ${author}. Make sure to react.`;
 
 	const emojiList = [];
 
@@ -18,7 +15,7 @@ const setupPlan = async (planDetails, options) => {
 		emojiList.push(emoji);
 	}
 
-	const responses = await generateResponses(null, channel, options);
+	const responses = await generateResponses(null, channel, options, role);
 
 	const messageEmbed = constructEmbedMessasge(message, options, responses);
 
@@ -30,7 +27,7 @@ const setupPlan = async (planDetails, options) => {
 	handleUserReactions(planMessage, message, emojiList, options);
 };
 
-const generateResponses = async (message, channel, options) => {
+const generateResponses = async (message, channel, options, role) => {
 	return new Promise((resolve, reject) => {
 		const reactedUsers = [];
 		const responses = [];
@@ -52,7 +49,7 @@ const generateResponses = async (message, channel, options) => {
 						let member = channel.guild.members.cache.get(user.id);
 						if (
 							!member.roles.cache.find(
-								(role) => role.name === globals.planRole
+								(role) => role.id === role.id
 							)
 						)
 							return;
@@ -76,11 +73,7 @@ const generateResponses = async (message, channel, options) => {
 		channel.guild.members.fetch().then((members) => {
 			members.map((member) => {
 				if (member.user.bot) return;
-				if (
-					!member.roles.cache.find(
-						(role) => role.name === globals.planRole
-					)
-				)
+				if (!member.roles.cache.find((role) => role.id === role.id))
 					return;
 
 				if (!reactedUsers.includes(member.user.id)) {
@@ -92,7 +85,13 @@ const generateResponses = async (message, channel, options) => {
 	});
 };
 
-const handleUserReactions = (message, messageDetails, emojiList, options) => {
+const handleUserReactions = (
+	message,
+	messageDetails,
+	emojiList,
+	options,
+	role
+) => {
 	const filter = (reaction, user) => {
 		return emojiList.includes(reaction.emoji.name) && !user.bot;
 	};
@@ -106,7 +105,8 @@ const handleUserReactions = (message, messageDetails, emojiList, options) => {
 		const responses = await generateResponses(
 			message,
 			message.channel,
-			options
+			options,
+			role
 		);
 
 		const messageEmbed = constructEmbedMessasge(

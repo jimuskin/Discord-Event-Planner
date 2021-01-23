@@ -18,7 +18,13 @@ const commandPlan = (message, args) => {
 		return;
 	}
 
-	if (!argsOptions(message, keyArg, args)) {
+	const role = message.guild.roles.cache.find(
+		(role) => role.toString() === keyArg
+	);
+
+	let optionName = role ? args.shift() : keyArg;
+
+	if (!argsOptions(message, optionName, args, role)) {
 		channel.send(
 			`Unknown/invalid options. Type ${globals.commandPrefix}plan help for more details.`
 		);

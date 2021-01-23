@@ -3,7 +3,7 @@ const setupPlan = require("../../setupPlan");
 
 const globals = require("../../globals");
 
-const argsOptions = (message, optionName, args) => {
+const argsOptions = (message, optionName, args, role) => {
 	const { author, channel } = message;
 
 	try {
@@ -23,6 +23,7 @@ const argsOptions = (message, optionName, args) => {
 			author: author,
 			channel: channel,
 			message: messageDetails,
+			role: role,
 		};
 
 		setupPlan(planDetails, options);
@@ -31,10 +32,6 @@ const argsOptions = (message, optionName, args) => {
 
 		return true;
 	} catch (error) {
-		channel.send(
-			`Unknown/invalid options. Type ${globals.commandPrefix} plan help for more details.`
-		);
-
 		return false;
 	}
 };
