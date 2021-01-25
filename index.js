@@ -17,32 +17,9 @@ client.on("message", (message) => {
 	const args = message.content.slice(prefix.length).trim().split(` `);
 	const commandName = args.shift().toLowerCase();
 
-	if (commandName === "testplan") {
-		constructTestPlan(message);
-	} else if (commandName === "plan") {
+	if (commandName === "plan") {
 		commandPlan(message, args);
 	}
 });
-
-const constructTestPlan = ({ author, channel }) => {
-	const planDetails = {
-		message: "Chill with the boys",
-		author: author,
-		channel: channel,
-	};
-
-	const options = [
-		{
-			emoji: "🇦",
-			option: "Item 1",
-		},
-		{
-			emoji: "🇧",
-			option: "Item 2",
-		},
-	];
-
-	require("./setupPlan")(planDetails, options);
-};
 
 client.login(process.env.DISCORD_TOKEN);
