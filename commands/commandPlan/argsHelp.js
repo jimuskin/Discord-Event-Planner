@@ -5,13 +5,13 @@ const globals = require("../../globals");
 const argsHelp = (message, args) => {
 	const messageEmbed = new MessageEmbed()
 		.setTitle("Event Planner Help")
-		.setColor(0x1167b1)
-		.setFooter("Yikes");
+		.setColor(0x1167b1);
 
 	const commands = [
 		{
-			command: "plan <option> <details>",
-			description: "Sets up a plan message to react to.",
+			command: "plan [role] <option> <details>",
+			description:
+				"Sets up a plan message to react to. Can select a specific role or leave it empty.",
 		},
 	];
 
